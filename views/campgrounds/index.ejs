@@ -1,0 +1,38 @@
+<% layout('layouts/boilerplate') -%>
+<link rel="stylesheet" href="/stylesheets/map.css">
+
+<div id="cluster-map"></div>
+<h1>キャンプ場一覧</h1>
+<div>
+  <a href="/campgrounds/new">新規登録</a>
+</div>
+<% for (let campground of campgrounds){ %>
+  <div class="card mb-3">
+    <div class="row">
+      <div class="col-md-4">
+        <% if(campground.images && campground.images.length){ %>
+          <img src="<%= campground.images[0].url %>" alt="" class="img-fulid">
+        <% }else{ %>
+          <img src="<%= `https://picsum.photos/300?random=${Math.random()}` %>" alt="" class="img-fulid">
+        <% } %>
+      </div>
+      <div class="col-md-8">
+        <div class="card-body">
+          <h5 class="card-title"><%= campground.title %></h5>
+          <p class="card-text"><%= campground.description %></p>
+          <p class="card-text">
+            <small class="text-muted"><%= campground.location %></small>
+          </p>
+          <a href="/campgrounds/<%= campground._id %>" class="btn btn-primary"><%= campground.title %>の詳細</a>
+        </div>
+      </div>
+    </div>
+  </div>
+<% } %>
+
+
+<script>
+  const apiKey = `<%= process.env.MAPTILER_KEY %>`
+  const campgrounds = <%- JSON.stringify(campgrounds) %>
+</script>
+<script src="/javascript/clusterMap.js"></script>
